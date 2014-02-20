@@ -37,3 +37,11 @@ def isPrime(prime):
 		if prime % i == 0:
 			return False
 	return True
+
+def isPalindrome(palindrome, eq=lambda x,y: x==y):
+	'''Returns whether a variable is a palindrome or not using a passed-in equals function.'''
+	length = len(palindrome)
+	for i in range(length/2):
+		if not eq(palindrome[i], palindrome[length-(i+1)]):
+			return False
+	return True
