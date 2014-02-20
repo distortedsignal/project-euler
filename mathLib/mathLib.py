@@ -46,3 +46,28 @@ def isPalindrome(palindrome, eq=lambda x,y: x==y):
 		if not eq(palindrome[i], palindrome[length-(i+1)]):
 			return False
 	return True
+
+def factor(number):
+	'''Returns the list of prime factors for the provided number.'''
+	factors = []
+	lastFactor = 1
+
+	while number % 2 == 0:
+		lastFactor = 2
+		factors.append(2)
+		number /= 2
+
+	maxFactor = int(ceil(sqrt(number)))
+	factor = 3
+
+	while number > 1 and factor <= maxFactor:
+		while number % factor == 0:
+			lastFactor = factor
+			factors.append(factor)
+			number /= factor
+		factor += 2
+
+	if number != 1:
+		factors.append(number)
+
+	return factors

@@ -33,3 +33,4 @@ Three solutions to the problem:
 | | ```getPrimes``` | Return all prime numbers less than or equal to the upperBound parameter using the Sieve of Ere. This is very slow for values over 40k. |
 | | ```isPrime``` | Returns whether a number is prime or not. |
 | | ```isPalindrome``` | Returns whether a variable is a palindrome or not using a passed-in equals function. The passed-in palindrome must be array-index-able. |
+| | ```factor``` | Returns the list of prime factors for the provided number. |
