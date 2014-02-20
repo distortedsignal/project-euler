@@ -14,9 +14,12 @@ A Python one-liner involving a lambda, and the ```filter``` and ```sum``` functi
 
 ##### Problem 3
 Three solutions to the problem:
+
 1. The first is a relatively naive search for a large prime. It can be read as follows: Given a large prime, for each number less than the prime, divide the large number by the chosen number. If the result is prime, print it and stop searching.
-1. The second is searching downward from the square root of the large number and will print the first factor that it finds that is also prime.
-1. The third was pulled from the Project Euler site and is the best of the three since it is the most optimized. I don't really want to go into it here, since it is quite intricate.
+
+2. The second is searching downward from the square root of the large number and will print the first factor that it finds that is also prime.
+
+3. The third was pulled from the Project Euler site and is the best of the three since it is the most optimized. I don't really want to go into it here, since it is quite intricate.
 
 
 
