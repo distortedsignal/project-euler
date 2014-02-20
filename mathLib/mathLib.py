@@ -19,7 +19,7 @@ def fibGen(upperBound, a=1, b=2):
 def getPrimes(upperBound):
 	'''Return all prime numbers less than or equal to the upperBound parameter.'''
 	'''This is very slow for values over 40k.'''
-	primeOptions = range(2,upperBound+1)
+	primeOptions = range(2,upperBound)
 	for i in primeOptions:
 		j = 2
 		while i * j <= upperBound:
@@ -30,13 +30,14 @@ def getPrimes(upperBound):
 			j += 1
 	return primeOptions
 
+def getPrimesToo(upperBound):
+	for i in range(2,upperBound):
+		pass
+
+
 def isPrime(prime):
 	'''Returns whether a number is prime or not.'''
-	r = range(2,int(ceil(sqrt(prime))))
-	for i in r:
-		if prime % i == 0:
-			return False
-	return True
+	return factor(prime) == [prime]
 
 def isPalindrome(palindrome, eq=lambda x,y: x==y):
 	'''Returns whether a variable is a palindrome or not using a passed-in equals function.'''
