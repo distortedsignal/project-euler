@@ -9,7 +9,7 @@ Some project euler problems and libraries
 
 
 ##### Problem 1
-A Python one-liner involving a list comprehension and the ```sum()``` function.
+A Python one-liner involving a list comprehension and the ```sum``` function.
 
 ##### Problem 2
 A Python one-liner involving a lambda, and the ```filter``` and ```sum``` functions. Importing and aliasing ```fibGen``` from mathLib.
