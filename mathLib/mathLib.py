@@ -40,6 +40,7 @@ def isPrime(prime):
 
 def isPalindrome(palindrome, eq=lambda x,y: x==y):
 	'''Returns whether a variable is a palindrome or not using a passed-in equals function.'''
+	'''The passed-in palindrome must be array-index-able.'''
 	length = len(palindrome)
 	for i in range(length/2):
 		if not eq(palindrome[i], palindrome[length-(i+1)]):
