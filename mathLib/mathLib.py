@@ -17,22 +17,11 @@ def fibGen(upperBound, a=1, b=2):
 	return fibList
 
 def getPrimes(upperBound):
-	'''Return all prime numbers less than or equal to the upperBound parameter.'''
-	'''This is very slow for values over 40k.'''
-	primeOptions = range(2,upperBound)
-	for i in primeOptions:
-		j = 2
-		while i * j <= upperBound:
-			try:
-				primeOptions.remove(i * j)
-			except ValueError, e:
-				pass
-			j += 1
-	return primeOptions
-
-def getPrimesToo(upperBound):
+	primes = []
 	for i in range(2,upperBound):
-		pass
+		if isPrime(i):
+			primes.append(i)
+	return primes
 
 
 def isPrime(prime):
