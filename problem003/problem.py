@@ -1,4 +1,4 @@
-from mathLib.mathLib import isPrime as p
+from mathLib.mathLib import isPrime as p, factor as f
 from time import clock as c
 from math import sqrt, ceil
 
@@ -25,30 +25,7 @@ for i in range(int(ceil(sqrt(bigConst))),1, -1):
 print c() - startTime
 
 startTime = c()
-#Optimal solution, given by Project Euler (not my work)
-tmpBigConst = 0
-lastFactor = 0
-if bigConst % 2 == 0:
-	lastFactor = 2
-	tmpBigConst = bigConst / 2
-	while tmpBigConst % 2 == 0:
-		tmpBigConst = tmpBigConst / 2
-else:
-	lastFactor = 1
-	tmpBigConst = bigConst
-maxFactor = sqrt(tmpBigConst)
-factor = 3
-while tmpBigConst > 1 and factor<=maxFactor:
-	if tmpBigConst % factor == 0:
-		tmpBigConst = tmpBigConst / factor
-		lastFactor = factor
-		while tmpBigConst % factor == 0:
-			tmpBigConst = tmpBigConst / factor
-		maxFactor = sqrt(tmpBigConst)
-	factor = factor + 2
-if tmpBigConst == 1:
-	print lastFactor
-else:
-	print tmpBigConst
+#Optimal solution, given by Project Euler (not my work) and broken out into a different file.
+print f(bigConst)[-1]
 
 print c() - startTime
