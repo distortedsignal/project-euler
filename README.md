@@ -17,4 +17,4 @@ A Python one-liner involving a list comprehension and the ```sum()``` function
 * mathLib.py
 ** Contains the following functions
 *** fibGen
-**** Takes an integer as an argument and returns all Fibonacci numbers less than that number
+**** Takes an integer as an argument and returns all Fibonacci numbers less or equal to than that number
