@@ -1,5 +1,5 @@
 def fibGen(upperBound, a=1, b=2):
-	'''Return all Fibonacci numbers less than or equal to the upperBound parameter'''
+	'''Return all Fibonacci numbers less than or equal to the upperBound parameter.'''
 	newA = a + b
 	newB = b + newA
 
