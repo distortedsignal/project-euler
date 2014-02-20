@@ -22,4 +22,6 @@ A Python one-liner involving a lambda, and the ```filter``` and ```sum``` functi
 | File Name | Contents | Comments |
 | :---------: | :--------: | :-------- |
 | mathLib.py | | |
-| | fibGen | Takes an integer as an argument and returns all Fibonacci numbers less or equal to than that number. |
+| | ```fibGen``` | Takes an integer as an argument and returns all Fibonacci numbers less or equal to than that number. |
+| | ```getPrimes``` | Return all prime numbers less than or equal to the upperBound parameter using the Sieve of Ere. This is very slow for values over 40k. |
+| | ```isPrime``` | Returns whether a number is prime or not. |

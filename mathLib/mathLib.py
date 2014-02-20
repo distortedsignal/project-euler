@@ -1,3 +1,5 @@
+from math import sqrt, ceil
+
 def fibGen(upperBound, a=1, b=2):
 	'''Return all Fibonacci numbers less than or equal to the upperBound parameter.'''
 	newA = a + b
@@ -13,3 +15,25 @@ def fibGen(upperBound, a=1, b=2):
 	fibList.insert(0,b)
 	fibList.insert(0,a)
 	return fibList
+
+def getPrimes(upperBound):
+	'''Return all prime numbers less than or equal to the upperBound parameter.'''
+	'''This is very slow for values over 40k.'''
+	primeOptions = range(2,upperBound+1)
+	for i in primeOptions:
+		j = 2
+		while i * j <= upperBound:
+			try:
+				primeOptions.remove(i * j)
+			except ValueError, e:
+				pass
+			j += 1
+	return primeOptions
+
+def isPrime(prime):
+	'''Returns whether a number is prime or not.'''
+	r = range(2,int(ceil(sqrt(prime))))
+	for i in r:
+		if prime % i == 0:
+			return False
+	return True
