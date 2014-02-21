@@ -23,7 +23,6 @@ def getPrimes(upperBound):
 			primes.append(i)
 	return primes
 
-
 def isPrime(prime):
 	'''Returns whether a number is prime or not.'''
 	return factor(prime) == [prime]

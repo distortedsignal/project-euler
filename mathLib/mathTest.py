@@ -16,21 +16,6 @@ startTime = cl()
 mathLib.getPrimes(30000)
 print "Elapsed time:", cl() - startTime, "\n\n"
 
-print "Get primes below 10000"
-startTime = cl()
-mathLib.getPrimesToo(10000)
-print "Elapsed time:", cl() - startTime, "\n"
-
-print "Get primes below 20000"
-startTime = cl()
-mathLib.getPrimesToo(20000)
-print "Elapsed time:", cl() - startTime, "\n"
-
-print "Get primes below 30000"
-startTime = cl()
-mathLib.getPrimesToo(30000)
-print "Elapsed time:", cl() - startTime, "\n\n"
-
 a,b,c,d,e = 100, 199, 214, 368, 600851475143
 print "Find if numbers are prime with isPrime"
 startTime = cl()
