@@ -60,3 +60,13 @@ def factor(number):
 		factors.append(number)
 
 	return factors
+
+def relativePrimes(number):
+	'''Returns a list of a number\'s relative primes'''
+	relPrimes = [1]
+	factors = set(factor(number))
+	for i in range(2, number):
+		tryFactors = set(factor(i))
+		if factors.intersection(tryFactors) == set():
+			relPrimes.append(i)
+	return relPrimes
