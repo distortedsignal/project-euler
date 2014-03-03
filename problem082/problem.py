@@ -1,5 +1,4 @@
 f = open("matrix.txt", "r")
-w = open("output.txt", "w+")
 
 matrix = []
 for line in f:
@@ -9,13 +8,22 @@ for line in f:
 
 # i is x coord, j is y coord.
 for i in range(1, len(matrix)):
-	tmpLst = []
+	tempList = []
+	verifiedList = []
 	for j in range(len(matrix)):
 		# First item in the list is the value,
 		# second item is if it was already visited
-		tmpLst.append([matrix[j][i] + matrix[j][i-1], False])
+		tempList.append(matrix[j][i] + matrix[j][i-1])
+		verifiedList.append(False)
 	
-	minIndex = tmpLst.index(min(tmpLst))
+	verifiedList[tempList.index(min(tempList))] = True
+	sortedTempList = tempList
+	sortedTempList.sort()
+
+	for j in sortedTempList:
+		currentIndex = tempList.index(j)
+
+	
 
 	
 
