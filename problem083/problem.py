@@ -1,5 +1,3 @@
-
-
 # Huh, this looks familiar.
 # Complexity: N
 f = open("matrix.txt", "r")
@@ -12,7 +10,9 @@ for line in f:
 	# Complexity: I'm going to assume N
 	matrix.append(map(int,line.strip().split(",")))
 
-result = matrix
+result = list(matrix)
+for i in range(len(matrix)):
+	result[i] = list(matrix[i])
 
 for i in range(len(matrix) - 1, -1, -1):
 	for j in range(len(matrix[i]) - 1, -1, -1):
@@ -76,7 +76,4 @@ while rebalanced:
 					result[i][j] = matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1]])
 					rebalanced = True
 
-
-
-
-print result
+print result[0][0]
