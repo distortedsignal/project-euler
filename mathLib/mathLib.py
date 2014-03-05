@@ -1,19 +1,17 @@
 from math import sqrt, ceil
+from types import *
 
-def fibGen(upperBound, a=1, b=2):
+def fibGen(upperBound, a=1):
 	'''Return all Fibonacci numbers less than or equal to the upperBound parameter.'''
-	newA = a + b
-	newB = b + newA
+	t = type(upperBound)
+	assert t in [IntType, LongType, FloatType], "Upper Bound " + str(upperBound) + \
+		" is of type " + str(t) + ". It should be an int, float, or a long."
+	assert upperBound > a, "Upper Bound " + upperBound + " must be greater than " + a + "."
+	fibList = [a, a + a]
+	while fibList[-1] <= upperBound:
+		fibList.append(fibList[-1] + fibList[-2])
+	fibList.pop()
 
-	if newA > upperBound:
-		return [a,b]
-
-	if newB > upperBound:
-		return [a,b,newA]
-
-	fibList = fibGen(upperBound, newA, newB)
-	fibList.insert(0,b)
-	fibList.insert(0,a)
 	return fibList
 
 def getPrimes(upperBound):
