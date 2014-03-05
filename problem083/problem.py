@@ -2,7 +2,7 @@ from copy import deepcopy
 from time import clock as cl
 # Huh, this looks familiar.
 # Complexity: N
-f = open("matrix1.txt", "r")
+f = open("matrix.txt", "r")
 
 matrix = []
 # Complexity: N^2 (but it's a small N^2, because the int function should be VERY optimized.)
@@ -65,7 +65,7 @@ while rebalanced:
 				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j-1]):
 					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j-1])
 					rebalanced = True
-			elif i == len(matrix) - 1:
+			elif j == 0:
 				# Left edge
 				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1]):
 					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1])
@@ -75,9 +75,5 @@ while rebalanced:
 				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1]):
 					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1])
 					rebalanced = True
-
-w = open("result.txt", "w")
-for i in range(len(result)):
-	w.write(str(result[i]) + "\n")
 
 print result[0][0], cl() - startTime
