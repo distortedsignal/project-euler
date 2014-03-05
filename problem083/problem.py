@@ -1,7 +1,8 @@
 from copy import deepcopy
+from time import clock as cl
 # Huh, this looks familiar.
 # Complexity: N
-f = open("matrix.txt", "r")
+f = open("matrix1.txt", "r")
 
 matrix = []
 # Complexity: N^2 (but it's a small N^2, because the int function should be VERY optimized.)
@@ -12,11 +13,11 @@ for line in f:
 	matrix.append(map(int,line.strip().split(",")))
 
 result = deepcopy(matrix)
-
+startTime = cl()
 for i in range(len(matrix) - 1, -1, -1):
 	for j in range(len(matrix[i]) - 1, -1, -1):
 		if i == len(matrix) - 1 and j == len(matrix) - 1:
-			pass
+			continue
 		elif i == len(matrix) - 1:
 			result[i][j] = matrix[i][j] + result[i][j+1]
 		elif j == len(matrix) - 1:
@@ -36,43 +37,47 @@ while rebalanced:
 				continue
 			elif i == 0 and j == 0:
 				# Origin of maze
-				if result[i][j] > matrix[i][j] + min([result[i+1][j], result[i][j+1]]):
-					result[i][j] = matrix[i][j] + min([result[i+1][j], result[i][j+1]])
+				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i][j+1]):
+					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i][j+1])
 					rebalanced = True
 			elif i == len(matrix) - 1 and j == 0:
 				# Lower left corner
-				if result[i][j] > matrix[i][j] + min([result[i-1][j], result[i][j+1]]):
-					result[i][j] = matrix[i][j] + min([result[i-1][j], result[i][j+1]])
+				if result[i][j] > matrix[i][j] + min(result[i-1][j], result[i][j+1]):
+					result[i][j] = matrix[i][j] + min(result[i-1][j], result[i][j+1])
 					rebalanced = True
 			elif i == 0 and j == len(matrix) - 1:
 				# Upper right corner
-				if result[i][j] > matrix[i][j] + min([result[i][j-1], result[i+1][j]]):
-					result[i][j] = matrix[i][j] + min([result[i][j-1], result[i+1][j]])
+				if result[i][j] > matrix[i][j] + min(result[i][j-1], result[i+1][j]):
+					result[i][j] = matrix[i][j] + min(result[i][j-1], result[i+1][j])
 					rebalanced = True
 			elif i == len(matrix) - 1:
 				# Bottom edge
-				if result[i][j] > matrix[i][j] + min([result[i][j+1], result[i][j-1], result[i-1][j]]):
-					result[i][j] = matrix[i][j] + min([result[i][j+1], result[i][j-1], result[i-1][j]])
+				if result[i][j] > matrix[i][j] + min(result[i][j+1], result[i][j-1], result[i-1][j]):
+					result[i][j] = matrix[i][j] + min(result[i][j+1], result[i][j-1], result[i-1][j])
 					rebalanced = True
 			elif i == 0:
 				# Top edge
-				if result[i][j] > matrix[i][j] + min([result[i][j+1], result[i][j-1], result[i+1][j]]):
-					result[i][j] = matrix[i][j] + min([result[i][j+1], result[i][j-1], result[i+1][j]])
+				if result[i][j] > matrix[i][j] + min(result[i][j+1], result[i][j-1], result[i+1][j]):
+					result[i][j] = matrix[i][j] + min(result[i][j+1], result[i][j-1], result[i+1][j])
 					rebalanced = True
 			elif j == len(matrix) - 1:
 				# Right edge
-				if result[i][j] > matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j-1]]):
-					result[i][j] = matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j-1]])
+				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j-1]):
+					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j-1])
 					rebalanced = True
 			elif i == len(matrix) - 1:
 				# Left edge
-				if result[i][j] > matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j+1]]):
-					result[i][j] = matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j+1]])
+				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1]):
+					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1])
 					rebalanced = True
 			else:
 				# The creamy middles
-				if result[i][j] > matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1]]):
-					result[i][j] = matrix[i][j] + min([result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1]])
+				if result[i][j] > matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1]):
+					result[i][j] = matrix[i][j] + min(result[i+1][j], result[i-1][j], result[i][j+1], result[i][j-1])
 					rebalanced = True
 
-print result
+w = open("result.txt", "w")
+for i in range(len(result)):
+	w.write(str(result[i]) + "\n")
+
+print result[0][0], cl() - startTime
