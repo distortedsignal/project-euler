@@ -1,16 +1,27 @@
 from math import atan
 
+def polarOrder(pointA, pointB):
+	if pointA[1] == pointB[1]:
+		if pointA[0] > pointB[0]:
+			print "Got polar order", pointA, pointB, "Returning negative infinity."
+			return float("-inf")
+		else:
+			print "Got polar order", pointA, pointB, "Returning positive infinity."
+			return float("inf")
+	print "Got polar order", pointA, pointB, "Returning", str(float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])) + "."
+	return float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])
+
 def convex(points):
 	# Sort by y axis to get lowest point in plane
 	points.sort(key = lambda x: x[1])
 	lowPoint = list(points[0])
 	points.remove(lowPoint)
 	# TODO Sort by polar angle
-	points.sort(key = lambda x: -(atan(float(x[1])/float(x[0])) if x != 0 else abs(x[1])/x[1]) if x[1] != 0 else 0)
+	points.sort(key = lambda x: -polarOrder(lowPoint, x))
 	# Walk the points from the first, adding each point to a stack if we think it's in the hull
 	print lowPoint, points
 
-
+	points.append(lowPoint)
 	return points
 
 f = open("triangles.txt", "r")
@@ -31,7 +42,7 @@ for triangle in triangles:
 
 	convexPoints = convex(points)
 
-	if convexPoints.count([0,0]) > 0:
+	if convexPoints.count([0,0]) == 0:
 		trianglesContainingOrigin += 1
 
 print trianglesContainingOrigin
