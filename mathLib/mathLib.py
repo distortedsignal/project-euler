@@ -1,4 +1,4 @@
-from math import sqrt, ceil
+from math import sqrt, ceil, atan
 from types import *
 
 def fibGen(upperBound, a=1):
@@ -68,3 +68,25 @@ def relativePrimes(number):
 		if factors.intersection(tryFactors) == set():
 			relPrimes.append(i)
 	return relPrimes
+
+def __polarOrder(pointA, pointB):
+	if pointA[1] == pointB[1]:
+		if pointA[0] > pointB[0]:
+			return float("inf")
+		else:
+			return float("-inf")
+	return -float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])
+
+def convex(points):
+	'''Assuming that points is a set of points, find the convex hull.'''
+	# Sort by y axis to get lowest point in plane
+	points.sort(key = lambda x: x[1])
+	lowPoint = list(points[0])
+	points.remove(lowPoint)
+	# TODO Sort by polar angle
+	points.sort(key = lambda x: __polarOrder(lowPoint, x))
+	# Walk the points from the first, adding each point to a stack if we think it's in the hull
+	print lowPoint, points
+
+	points.append(lowPoint)
+	return points
