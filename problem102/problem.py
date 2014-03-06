@@ -1,23 +1,22 @@
 from math import atan
 
+# TODO move this to mathLib
 def polarOrder(pointA, pointB):
 	if pointA[1] == pointB[1]:
 		if pointA[0] > pointB[0]:
-			print "Got polar order", pointA, pointB, "Returning negative infinity."
-			return float("-inf")
-		else:
-			print "Got polar order", pointA, pointB, "Returning positive infinity."
 			return float("inf")
-	print "Got polar order", pointA, pointB, "Returning", str(float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])) + "."
-	return float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])
+		else:
+			return float("-inf")
+	return -float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])
 
+# TODO move to mathLib
 def convex(points):
 	# Sort by y axis to get lowest point in plane
 	points.sort(key = lambda x: x[1])
 	lowPoint = list(points[0])
 	points.remove(lowPoint)
 	# TODO Sort by polar angle
-	points.sort(key = lambda x: -polarOrder(lowPoint, x))
+	points.sort(key = lambda x: polarOrder(lowPoint, x))
 	# Walk the points from the first, adding each point to a stack if we think it's in the hull
 	print lowPoint, points
 
