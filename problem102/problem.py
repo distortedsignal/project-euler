@@ -4,10 +4,11 @@ def convex(points):
 	# Sort by y axis to get lowest point in plane
 	points.sort(key = lambda x: x[1])
 	lowPoint = list(points[0])
-	# Sort by polar angle
+	points.remove(lowPoint)
+	# TODO Sort by polar angle
 	points.sort(key = lambda x: -(atan(float(x[1])/float(x[0])) if x != 0 else abs(x[1])/x[1]) if x[1] != 0 else 0)
 	# Walk the points from the first, adding each point to a stack if we think it's in the hull
-	print points
+	print lowPoint, points
 
 
 	return points
