@@ -1,4 +1,4 @@
-import mathLib
+import mathLib, math
 from time import clock as cl
 
 # print "Get primes below 10000"
@@ -35,5 +35,45 @@ from time import clock as cl
 # mathLib.factor(e) != [e]
 # print "Elapsed time:", cl() - startTime, "\n"
 
-assert mathLib.convex([[0,0],[1,0],[0,1],[1,1]]) == [[1,0],[1,1],[0,1],[0,0]], "Failed test where all points are on convex hull."
-assert mathLib.convex([[0,0],[2,0],[0,2],[2,2],[1,1]]) == [[0,0],[2,0],[0,2],[2,2]], "Failed test where not all points are on convex hull."
+# assert mathLib.dotProduct([0,1],[1,0]) == 0, "Dot Product returned " + \
+# 	str(mathLib.dotProduct([0,1],[1,0])) + " when it should have returned zero."
+# assert mathLib.dotProduct([1,0],[1,0]) == 1, "Dot Product returned " + \
+# 	str(mathLib.dotProduct([0,1],[1,0])) + " when it should have returned one."
+# assert mathLib.dotProduct([1,0],[1,0]) == 1, "Dot Product returned " + \
+# 	str(mathLib.dotProduct([1,1],[1,0])) + " when it should have returned one."
+# assert mathLib.dotProduct([1,3,-5],[4,-2,-1]) == 3, "Dot Product returned " + \
+# 	str(mathLib.dotProduct([1,3,-5],[4,-2,-1])) + " when it should have returned three."
+
+# print "Dot Product works."
+
+# assert mathLib.magnitude([1,0]) == 1, "Magnitude returned " + mathLib.magnitude([1,0]) + \
+# 	" when it should have returned one."
+# assert mathLib.magnitude([1,1]) > 1.4 and mathLib.magnitude([1,1]) < 1.5, "Magnitude returned " + \
+# 	mathLib.magnitude([1,1]) + " when it should have returned 1.414."
+# assert mathLib.magnitude([5,0]) == 5, "Magnitude returned " + mathLib.magnitude([5,0]) + \
+# 	" when it should have returned 5."
+# assert mathLib.magnitude([5,5]) == 5 * math.sqrt(2), "Magnitude returned " + \
+# 	mathLib.magnitude([5,0]) + " when it should have returned 5*sqrt(2)."
+
+# print "Magnitude works."
+
+# print mathLib.getAngle([-1,0],[0,0],[1,0])
+# print mathLib.getAngle([-1,0],[0,0],[0,1])
+# print mathLib.getAngle([-1,0],[0,0],[-1,0])
+# print mathLib.getAngle([-1,0],[0,0],[0,-1])
+
+# print "Get angle works."
+
+# print mathLib.counterclockwise([-1,0],[0,0],[1,0])
+
+# print "counterclockwise works."
+
+print mathLib.convex([[0,0],[1,0],[0,1],[1,1]])
+
+assert mathLib.convex([[0,0],[1,0],[0,1],[1,1]]) == [[0,0],[1,0],[1,1],[0,1]], "Failed test " + \
+	"where all points are on convex hull."
+assert mathLib.convex([[0,0],[2,0],[0,2],[2,2],[1,1]]) == [[0,0],[2,0],[2,2],[0,2]], "Failed " + \
+	"test where not all points are on convex hull."
+assert mathLib.convex([[1,1],[0,0],[2,0],[0,2],[2,2]]) == [[0,0],[2,0],[2,2],[0,2]], "Failed " + \
+	"test where not all points are on convex hull."
+	

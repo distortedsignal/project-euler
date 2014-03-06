@@ -1,5 +1,6 @@
 from math import sqrt, ceil, atan, acos
 from types import *
+import operator
 
 def fibGen(upperBound, a=1):
 	'''Return all Fibonacci numbers less than or equal to the upperBound parameter.'''
@@ -77,8 +78,24 @@ def __polarOrder(pointA, pointB):
 			return float("-inf")
 	return -float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])
 
+def dotProduct(rayA, rayB):
+	return sum(map(operator.mul, rayA, rayB))
+
+def magnitude(ray):
+	return sqrt(sum(map(lambda x: pow(x,2), ray)))
+
+def getRay(pointA, pointB):
+	return map(operator.sub, pointB, pointA)
+
 def getAngle(pointA, pointB, pointC):
-	return float(dotProduct((pointB-pointA), (pointC-pointB)))/float(magnitude(pointB-pointA)*magnitude(pointC-pointB))
+	rayA = getRay(pointA, pointB)
+	rayB = getRay(pointB, pointC)
+	return acos(float(dotProduct(rayA, rayB))/float(magnitude(rayA) * magnitude(rayB)))
+
+def counterclockwise(pointA, pointB, pointC):
+	x, y = 0, 1
+	return ((pointB[x]-pointA[x])*(pointC[y]-pointA[y])) - \
+		((pointB[y]-pointA[y])*(pointC[x]-pointA[x]))
 
 
 def convex(points):
@@ -97,8 +114,10 @@ def convex(points):
 		if i == len(points) - 1:
 			thirdPoint = lowPoint
 		else:
-			thirdPoint = points[i]
-		angle = getAngle(hullPoints[-1], points[i], thirdPoint)
-
-	points.append(lowPoint)
-	return points
+			thirdPoint = points[i+1]
+		if counterclockwise(hullPoints[-1], points[i], thirdPoint) > 0:
+			hullPoints.append(points[i])
+		else:
+			while counterclockwise(hullPoints[-2], hullPoints[-1], thirdPoint) <= 0:
+				hullPoints.pop()
+	return hullPoints
