@@ -35,5 +35,5 @@ from time import clock as cl
 # mathLib.factor(e) != [e]
 # print "Elapsed time:", cl() - startTime, "\n"
 
-assert mathLib.convex([[0,0],[1,0],[0,1],[1,1]]) == [[0,0],[1,0],[0,1],[1,1]], "Failed test where all points are on convex hull."
+assert mathLib.convex([[0,0],[1,0],[0,1],[1,1]]) == [[1,0],[1,1],[0,1],[0,0]], "Failed test where all points are on convex hull."
 assert mathLib.convex([[0,0],[2,0],[0,2],[2,2],[1,1]]) == [[0,0],[2,0],[0,2],[2,2]], "Failed test where not all points are on convex hull."

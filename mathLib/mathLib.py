@@ -1,4 +1,4 @@
-from math import sqrt, ceil, atan
+from math import sqrt, ceil, atan, acos
 from types import *
 
 def fibGen(upperBound, a=1):
@@ -77,16 +77,28 @@ def __polarOrder(pointA, pointB):
 			return float("-inf")
 	return -float(pointB[0]-pointA[0])/float(pointB[1]-pointA[1])
 
+def getAngle(pointA, pointB, pointC):
+	return float(dotProduct((pointB-pointA), (pointC-pointB)))/float(magnitude(pointB-pointA)*magnitude(pointC-pointB))
+
+
 def convex(points):
 	'''Assuming that points is a set of points, find the convex hull.'''
 	# Sort by y axis to get lowest point in plane
 	points.sort(key = lambda x: x[1])
 	lowPoint = list(points[0])
 	points.remove(lowPoint)
+	hullPoints = [lowPoint]
 	# TODO Sort by polar angle
 	points.sort(key = lambda x: __polarOrder(lowPoint, x))
 	# Walk the points from the first, adding each point to a stack if we think it's in the hull
-	print lowPoint, points
+	#print lowPoint, points
+	thirdPoint = list([])
+	for i in range(len(points)):
+		if i == len(points) - 1:
+			thirdPoint = lowPoint
+		else:
+			thirdPoint = points[i]
+		angle = getAngle(hullPoints[-1], points[i], thirdPoint)
 
 	points.append(lowPoint)
 	return points
