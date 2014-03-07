@@ -34,3 +34,12 @@ Three solutions to the problem:
 | | ```isPrime``` | Returns whether a number is prime or not. |
 | | ```isPalindrome``` | Returns whether a variable is a palindrome or not using a passed-in equals function. The passed-in palindrome must be array-index-able. |
 | | ```factor``` | Returns the list of prime factors for the provided number. |
+
+### Problems to do
+###### And badges to do them for
+Badge: Problem #'s
+Easy as Pi: 79
+Unlucky Squares: 64, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 441, 484 (Need 5)
+Prime Obsession: 59, 61, 71, 79, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457 (Need lots)
+Fibonacci Fever: 144, 233
+
