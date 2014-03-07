@@ -1,4 +1,5 @@
 from mathLib.mathLib import convex
+from time import clock as cl
 
 f = open("triangles.txt", "r")
 
@@ -9,7 +10,7 @@ for line in f:
 	# integers, and then append the created list to triangles.
 	# Complexity: I'm going to assume N
 	triangles.append(map(int,line.strip().split(",")))
-
+startTime = cl()
 trianglesContainingOrigin = 0
 
 # Treating this as a convex hull problem (http://en.wikipedia.org/wiki/Convex_hull)
@@ -21,4 +22,4 @@ for triangle in triangles:
 	if convexPoints.count([0,0]) == 0:
 		trianglesContainingOrigin += 1
 
-print trianglesContainingOrigin
+print trianglesContainingOrigin, cl() - startTime
