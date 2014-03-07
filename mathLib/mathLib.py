@@ -97,7 +97,6 @@ def counterclockwise(pointA, pointB, pointC):
 	return ((pointB[x]-pointA[x])*(pointC[y]-pointA[y])) - \
 		((pointB[y]-pointA[y])*(pointC[x]-pointA[x]))
 
-
 def convex(points):
 	'''Assuming that points is a set of points, find the convex hull.'''
 	# Sort by y axis to get lowest point in plane
@@ -121,3 +120,6 @@ def convex(points):
 			while counterclockwise(hullPoints[-2], hullPoints[-1], thirdPoint) <= 0:
 				hullPoints.pop()
 	return hullPoints
+
+def radical(n):
+	return reduce(operator.mul, set(factor(n)))
