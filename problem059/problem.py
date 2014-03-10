@@ -1,9 +1,13 @@
+from time import clock as cl
+
 f = open('cipher1.txt', 'r')
 
 encrypted = []
 
 for line in f:
 	encrypted = map(lambda x: int(x), line.split(','))
+
+startTime = cl()
 
 spaceXORd = map(lambda x: x^32, encrypted)
 
@@ -42,4 +46,4 @@ for i in range(len(encrypted)):
 	if i % 3 == 2:
 		message += chr(encrypted[i]^cMode[0])
 
-print sum(map(ord, message))
+print sum(map(ord, message)), cl() - startTime
