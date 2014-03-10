@@ -1,17 +1,35 @@
-def sumDown(sumTo, sumList, prevNum = ""):
-	print "Summing down", sumTo, "with", sumList
-	if sumTo == 1:
+cacheDict = {}
+# TODO Move this to mathLib
+def sumBetter(final, sumList = [], top = False):
+	if final == 0:
 		return 1
+	if final < 0:
+		return 0
+	global cacheDict
+	if sumList == []:
+		sumList = range(1, final)
+	strSumList = ",".join(map(str, sumList))
+	if cacheDict.has_key(final):
+		if cacheDict[final].has_key(strSumList):
+			return cacheDict[final][strSumList]
+	else:
+		cacheDict[final] = dict({})
+	# print "Calling sumBetter with " + str(final) + " and " + str(sumList)
 
 	sums = 0
 	for i in sumList:
-		print prevNum + ", " + str(i)
-		sums += sumDown(sumTo - i, filter(lambda x: x <= sumTo - i, sumList), prevNum + ", " + str(i))
-
-	print "For", sumTo, "summed", sums
+		newSumList = filter(lambda x: x <= i, sumList)
+		strNewSumList = ",".join(map(str, newSumList))
+		if top:
+			# Dead code
+			print i
+		sums += sumBetter(final - i, newSumList)
+	cacheDict[final][strSumList] = sums
 	return sums
 
-sumNum = 5
-l = range(1,sumNum)
-l.sort(key = lambda x: -x)
-print sumDown(sumNum, l)
+for i in range(2,40):
+	print str(i), ":", str(sumBetter(i))
+
+print "sumBetter for 100:", str(sumBetter(100))
+
+print cacheDict
