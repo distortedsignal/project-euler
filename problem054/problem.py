@@ -1,3 +1,5 @@
+from time import clock as cl
+
 sf, fook, fh, fl, st, took, tp, pair, hc = "StraightFlush", "FourOfAKind", "FullHouse", "Flush", \
 	"Straigh", "ThreeOfAKind", "TwoPair", "Pair", "HighCards"
 
@@ -172,7 +174,7 @@ def getValue(hand):
 	return handValue
 	
 f = open('poker.txt', 'r')
-
+startTime = cl()
 hand1Wins = 0
 
 for i in f:
@@ -189,4 +191,4 @@ for i in f:
 	if handBetter(hand1Value, hand2Value):
 		hand1Wins += 1
 
-print hand1Wins
+print hand1Wins, cl() - startTime
