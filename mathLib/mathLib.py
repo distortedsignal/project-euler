@@ -28,7 +28,7 @@ def isPrime(prime):
 		if prime == 2 or prime == 3 or prime == 5 or prime == 7:
 			return True
 		if prime == 4 or prime == 6 or prime == 8 or prime == 9:
-			return True
+			return False
 	if prime % 2 == 0:
 		return False
 	for i in range(3, int(ceil(sqrt(prime))), 2):
