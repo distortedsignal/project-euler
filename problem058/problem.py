@@ -34,10 +34,10 @@ primeCount = 0
 while True:
 	grid = addLayer(grid)
 	primeCount = 0
-	for i in len(grid):
+	for i in range(len(grid)):
 		if isPrime(grid[i][i]):
 			primeCount += 1
-		if isPrime(grid[i][-i]):
+		if isPrime(grid[len(grid)-(i+1)][i]):
 			primeCount += 1
 	if (float(primeCount) / float((len(grid) * 2) - 1)) < .1:
 		break
