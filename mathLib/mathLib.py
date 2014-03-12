@@ -31,7 +31,7 @@ def isPrime(prime):
 			return False
 	if prime % 2 == 0:
 		return False
-	for i in range(3, int(ceil(sqrt(prime))), 2):
+	for i in range(3, int(ceil(sqrt(prime)))+1, 2):
 		if prime % i == 0:
 			return False
 	return True
