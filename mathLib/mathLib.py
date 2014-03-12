@@ -24,7 +24,17 @@ def getPrimes(upperBound):
 
 def isPrime(prime):
 	'''Returns whether a number is prime or not.'''
-	return factor(prime) == [prime]
+	if prime < 10:
+		if prime == 2 or prime == 3 or prime == 5 or prime == 7:
+			return True
+		if prime == 4 or prime == 6 or prime == 8 or prime == 9:
+			return True
+	if prime % 2 == 0:
+		return False
+	for i in range(3, int(ceil(sqrt(prime))), 2):
+		if prime % i == 0:
+			return False
+	return True
 
 def isPalindrome(palindrome, eq=lambda x,y: x==y):
 	'''Returns whether a variable is a palindrome or not using a passed-in equals function.'''
