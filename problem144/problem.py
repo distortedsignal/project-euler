@@ -1,4 +1,5 @@
-from math import sqrt
+from math import sqrt, atan, tan
+from copy import deepcopy
 
 def reflect(beamSlope, beamDir, wallSlope):
 	'''Return the slope (as a float) of a reflected beam given the incident 
@@ -22,10 +23,9 @@ def reflect(beamSlope, beamDir, wallSlope):
 		wallNormal = 0
 	else:
 		wallNormal = -1/wallSlope
-
-
-
-	pass
+	innerAngle = atan((beamSlope - wallNormal)/(1 + (beamSlope*wallNormal)))
+	return tan(atan(wallSlope) - innerAngle)
+	raise NotImplementedError()
 
 oldSpot = [0, 10.1]
 newSpot = [1.4, -9.6]
@@ -36,19 +36,16 @@ while newSpot[0] < -0.01 and newSpot[0] > 0.01 and newSpot[1] < 9:
 	beamSlope = 0
 	beamDir = 0
 
-	if newSpot[1] == 0:
+	if newSpot[1] == 0.0:
 		wallSlope = float("inf")
 	else:
 		wallSlope = -4*x/y
 
-	if newSpot[0] - oldSpot[0] == 0:
-		beamSlope = float("inf") * (float(newSpot[1] - oldSpot[1])/abs(float(newSpot[1] - oldSpot[1])))
-	else:
-		beamSlope = float(newSpot[1] - oldSpot[1])/float(newSpot[0] - oldSpot[0])
-		beamDir = round(float(newSpot[0] - oldSpot[0])/float(abs(newSpot[0] - oldSpot[0])))
+	beamSlope = float(newSpot[1] - oldSpot[1])/float(newSpot[0] - oldSpot[0])
+	beamDir = round(float(newSpot[0] - oldSpot[0])/float(abs(newSpot[0] - oldSpot[0])))
 
-	reflectedSlope = reflect()
+	reflectedSlope = reflect(beamSlope, beamDir, wallSlope)
 	bounce += 1
-	oldSpot = newSpot
+	oldSpot = deepcopy(newSpot)
 	newSpot = calcNewSpot()
-	break
+print bounce
