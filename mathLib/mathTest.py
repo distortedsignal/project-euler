@@ -1,5 +1,6 @@
 import mathLib, math
 from time import clock as cl
+from random import random as r
 
 # print "Get primes below 10000"
 # startTime = cl()
@@ -68,12 +69,12 @@ from time import clock as cl
 
 # print "counterclockwise works."
 
-print mathLib.convex([[0,0],[1,0],[0,1],[1,1]])
+# print mathLib.convex([[0,0],[1,0],[0,1],[1,1]])
 
-assert mathLib.convex([[0,0],[1,0],[0,1],[1,1]]) == [[0,0],[1,0],[1,1],[0,1]], "Failed test " + \
-	"where all points are on convex hull."
-assert mathLib.convex([[0,0],[2,0],[0,2],[2,2],[1,1]]) == [[0,0],[2,0],[2,2],[0,2]], "Failed " + \
-	"test where not all points are on convex hull."
-assert mathLib.convex([[1,1],[0,0],[2,0],[0,2],[2,2]]) == [[0,0],[2,0],[2,2],[0,2]], "Failed " + \
-	"test where not all points are on convex hull."
+# assert mathLib.convex([[0,0],[1,0],[0,1],[1,1]]) == [[0,0],[1,0],[1,1],[0,1]], "Failed test " + \
+# 	"where all points are on convex hull."
+# assert mathLib.convex([[0,0],[2,0],[0,2],[2,2],[1,1]]) == [[0,0],[2,0],[2,2],[0,2]], "Failed " + \
+# 	"test where not all points are on convex hull."
+# assert mathLib.convex([[1,1],[0,0],[2,0],[0,2],[2,2]]) == [[0,0],[2,0],[2,2],[0,2]], "Failed " + \
+# 	"test where not all points are on convex hull."
 	
