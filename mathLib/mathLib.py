@@ -114,10 +114,9 @@ def convex(points):
 	lowPoint = list(points[0])
 	points.remove(lowPoint)
 	hullPoints = [lowPoint]
-	# TODO Sort by polar angle
+	# Sort by polar angle
 	points.sort(key = lambda x: __polarOrder(lowPoint, x))
 	# Walk the points from the first, adding each point to a stack if we think it's in the hull
-	#print lowPoint, points
 	thirdPoint = list([])
 	for i in range(len(points)):
 		if i == len(points) - 1:
