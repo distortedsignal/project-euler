@@ -131,8 +131,9 @@ def convex(points):
 		if counterclockwise(hullPoints[-1], points[i], thirdPoint) > 0:
 			hullPoints.append(points[i])
 		else:
-			while counterclockwise(hullPoints[-2], hullPoints[-1], thirdPoint) <= 0:
-				hullPoints.pop()
+			if len(hullPoints) > 1:
+				while counterclockwise(hullPoints[-2], hullPoints[-1], thirdPoint) <= 0:
+					hullPoints.pop()
 	return hullPoints
 
 def radical(n):
