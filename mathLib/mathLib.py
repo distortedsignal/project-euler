@@ -109,7 +109,12 @@ def counterclockwise(pointA, pointB, pointC):
 
 def convex(points):
 	'''Assuming that points is a set of points, find the convex hull.'''
+	# Sort by x to get furthest left point
+	points.sort(key = lambda x: x[0])
 	# Sort by y axis to get lowest point in plane
+	# We need two sorts so that if the lowest points are coliniar and a point in the middle of 
+	# the line is passed in as the first element in the list, that point is not marked as being 
+	# on the convex hull.
 	points.sort(key = lambda x: x[1])
 	lowPoint = list(points[0])
 	points.remove(lowPoint)
