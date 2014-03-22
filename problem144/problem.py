@@ -45,6 +45,7 @@ while (newSpot[0] < -0.01 or newSpot[0] > 0.01) and newSpot[1] < 9:
 	beamDir = round(float(newSpot[0] - oldSpot[0])/float(abs(newSpot[0] - oldSpot[0])))
 
 	reflectedSlope = reflect(beamSlope, int(round(beamDir)), wallSlope)
+	print reflectedSlope
 	bounce += 1
 	oldSpot = deepcopy(newSpot)
 	newSpot = calcNewSpot()
