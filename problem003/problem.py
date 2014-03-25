@@ -12,6 +12,7 @@ def simpleSolution():
 
 #Second attempt, better, but still not great (~0.07 seconds)
 def nuancedSolution():
+	from math import ceil, sqrt
 	from mathLib.mathLib import isPrime as p
 	for i in range(int(ceil(sqrt(bigConst))),1, -1):
 		if bigConst % i == 0:
