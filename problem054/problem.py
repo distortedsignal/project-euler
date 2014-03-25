@@ -195,3 +195,4 @@ def simpleSolution(filePath):
 
 if __name__ == "__main__":
 	print simpleSolution('poker.txt')
+	
