@@ -1,49 +1,49 @@
-from time import clock as cl
+def simpleSolution(filePath):
+	f = open(filePath, 'r')
 
-f = open('cipher1.txt', 'r')
+	encrypted = []
 
-encrypted = []
+	for line in f:
+		encrypted = map(lambda x: int(x), line.split(','))
 
-for line in f:
-	encrypted = map(lambda x: int(x), line.split(','))
+	spaceXORd = map(lambda x: x^32, encrypted)
 
-startTime = cl()
+	aXORd, bXORd, cXORd = [], [], []
 
-spaceXORd = map(lambda x: x^32, encrypted)
+	for i in range(0, len(spaceXORd), 3):
+		aXORd.append(spaceXORd[i])
 
-aXORd, bXORd, cXORd = [], [], []
+	for i in range(1, len(spaceXORd), 3):
+		bXORd.append(spaceXORd[i])
 
-for i in range(0, len(spaceXORd), 3):
-	aXORd.append(spaceXORd[i])
+	for i in range(2, len(spaceXORd), 3):
+		cXORd.append(spaceXORd[i])
 
-for i in range(1, len(spaceXORd), 3):
-	bXORd.append(spaceXORd[i])
+	aMode, bMode, cMode = [0, 0], [0, 0], [0, 0]
 
-for i in range(2, len(spaceXORd), 3):
-	cXORd.append(spaceXORd[i])
+	for a in aXORd:
+		if aXORd.count(a) > aMode[1]:
+			aMode = [a, aXORd.count(a)]
 
-aMode, bMode, cMode = [0, 0], [0, 0], [0, 0]
+	for b in bXORd:
+		if bXORd.count(b) > bMode[1]:
+			bMode = [b, bXORd.count(b)]
 
-for a in aXORd:
-	if aXORd.count(a) > aMode[1]:
-		aMode = [a, aXORd.count(a)]
+	for c in cXORd:
+		if cXORd.count(c) > cMode[1]:
+			cMode = [c, cXORd.count(c)]
 
-for b in bXORd:
-	if bXORd.count(b) > bMode[1]:
-		bMode = [b, bXORd.count(b)]
+	message = ""
 
-for c in cXORd:
-	if cXORd.count(c) > cMode[1]:
-		cMode = [c, cXORd.count(c)]
+	for i in range(len(encrypted)):
+		if i % 3 == 0:
+			message += chr(encrypted[i]^aMode[0])
+		if i % 3 == 1:
+			message += chr(encrypted[i]^bMode[0])
+		if i % 3 == 2:
+			message += chr(encrypted[i]^cMode[0])
 
-message = ""
+	return sum(map(ord, message))
 
-for i in range(len(encrypted)):
-	if i % 3 == 0:
-		message += chr(encrypted[i]^aMode[0])
-	if i % 3 == 1:
-		message += chr(encrypted[i]^bMode[0])
-	if i % 3 == 2:
-		message += chr(encrypted[i]^cMode[0])
-
-print sum(map(ord, message)), cl() - startTime
+if __name__ == "__main__":
+	print simpleSolution('cipher1.txt')

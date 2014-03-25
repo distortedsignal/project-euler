@@ -1,5 +1,3 @@
-from time import clock as cl
-
 cacheDict = {}
 # TODO Move this to mathLib
 def sumBetter(final, sumList = [], top = False):
@@ -27,5 +25,9 @@ def sumBetter(final, sumList = [], top = False):
 		sums += sumBetter(final - i, newSumList)
 	cacheDict[final][strSumList] = sums
 	return sums
-startTime = cl()
-print "sumBetter for 100:", str(sumBetter(100)), cl() - startTime
+
+def simpleSolution():
+	return sumBetter(100)
+
+if __name__ == "__main__":
+	print simpleSolution()

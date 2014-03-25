@@ -35,7 +35,7 @@ def problem58():
 @app.route('/problem059/')
 def problem59():
 	from problem059.problem import simpleSolution as s
-	return str(s())
+	return str(s(os.sep.join(['problem059','cipher1.txt'])))
 
 @app.route('/problem076/')
 def problem76():
@@ -45,22 +45,22 @@ def problem76():
 @app.route('/problem079/')
 def problem79():
 	from problem079.problem import simpleSolution as s
-	return str(s())
+	return str(s(os.sep.join(['problem079','keylog.txt'])))
 
 @app.route('/problem082/')
 def problem82():
 	from problem082.problem import simpleSolution as s
-	return str(s())
+	return str(s(os.sep.join(['problem082','matrix.txt'])))
 
 @app.route('/problem083/')
 def problem83():
 	from problem083.problem import simpleSolution as s
-	return str(s())
+	return str(s(os.sep.join(['problem083','matrix.txt'])))
 
 @app.route('/problem102/')
 def problem102():
 	from problem102.problem import simpleSolution as s
-	return str(s())
+	return str(s(os.sep.join(['problem102','triangles.txt'])))
 
 if __name__ == "__main__":
-	app.run()
+	app.run(debug = True)

@@ -1,6 +1,6 @@
-def simpleSolution():
+def simpleSolution(filePath):
 	from mathLib.mathLib import convex
-	f = open("triangles.txt", "r")
+	f = open(filePath, "r")
 
 	triangles = []
 
@@ -28,4 +28,4 @@ if __name__ == "__main__":
 	cmd_folder = os.sep.join(os.path.abspath(inspect.getfile(inspect.currentframe())).split(os.sep)[:-2])
 	if cmd_folder not in sys.path:
 		sys.path.insert(0, cmd_folder)
-	print simpleSolution()
+	print simpleSolution("triangles.txt")
