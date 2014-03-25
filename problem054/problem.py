@@ -172,23 +172,26 @@ def getValue(hand):
 	handValue[hc] = map(lambda x: cardValue(x), hand)
 
 	return handValue
-	
-f = open('poker.txt', 'r')
-startTime = cl()
-hand1Wins = 0
 
-for i in f:
-	# Split into two hands
-	cardList = i.strip().split(' ')
+def simpleSolution(filePath):
+	f = open(filePath, 'r')
+	hand1Wins = 0
 
-	hand1, hand2 = cardList[:5], cardList[5:]
+	for i in f:
+		# Split into two hands
+		cardList = i.strip().split(' ')
 
-	# For both hands, figure out what hand value is
-	hand1Value = getValue(hand1)
-	hand2Value = getValue(hand2)
+		hand1, hand2 = cardList[:5], cardList[5:]
 
-	# Compare hand value
-	if handBetter(hand1Value, hand2Value):
-		hand1Wins += 1
+		# For both hands, figure out what hand value is
+		hand1Value = getValue(hand1)
+		hand2Value = getValue(hand2)
 
-print hand1Wins, cl() - startTime
+		# Compare hand value
+		if handBetter(hand1Value, hand2Value):
+			hand1Wins += 1
+
+	return hand1Wins
+
+if __name__ == "__main__":
+	print simpleSolution('poker.txt')

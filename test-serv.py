@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
@@ -24,7 +25,7 @@ def problem3():
 @app.route('/problem054/')
 def problem54():
 	from problem054.problem import simpleSolution as s
-	return str(s())
+	return str(s(os.sep.join(['problem054','poker.txt'])))
 
 @app.route('/problem058/')
 def problem58():
