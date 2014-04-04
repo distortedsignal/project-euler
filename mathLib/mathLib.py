@@ -70,6 +70,28 @@ def factor(number):
 
 	return factors
 
+def fracReduce(numerator, denominator):
+	numFactor = factor(numerator)
+	if numerator == 1:
+		numFactor.append(numerator)
+	denomFactor = factor(denominator)
+	if denominator == 1:
+		denomFactor.append(denominator)
+	index = 0
+	while True:
+		if denomFactor.count(numFactor[index]) > 0:
+			denomFactor.remove(numFactor[index])
+			numFactor.remove(numFactor[index])
+			denomFactor.append(1)
+			numFactor.append(1)
+			denomFactor.sort()
+			numFactor.sort()
+		index += 1
+		if index >= len(numFactor):
+			break
+	return (reduce(operator.mul, numFactor), reduce(operator.mul, denomFactor))
+
+
 def relativePrimes(number):
 	'''Returns a list of a number\'s relative primes'''
 	relPrimes = [1]
