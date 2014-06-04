@@ -1,4 +1,5 @@
 from copy import deepcopy
+from time import time
 
 def strToList(foo):
 	rtrnLst = []
@@ -90,7 +91,7 @@ def deduct(puzzle):
 	return puzzle
 
 def induct(puzzle):
-	print puzzle
+	# print puzzle
 	return puzzle
 
 def solveSudoku(puzzle):
@@ -120,15 +121,19 @@ f = open('sudoku.txt', 'r')
 
 #Read in data for sudokus
 sudokuDict = readInData(f)
-
+time0 = 0
+timeDict = {}
 for a in sudokuDict:
 	# Change sudokus from strings into ints or lists of ints
 	rows = range(len(sudokuDict[a]))
 	for i in rows:
 		sudokuDict[a][i] = strToList(sudokuDict[a][i])
 
-	solveSudoku(sudokuDict[a])
+	time0 = time()
+	sudokuDict[a] = solveSudoku(sudokuDict[a])
+	timeDict[a] = time() - time0
 
+print timeDict
 print sudokuDict
 	
 
