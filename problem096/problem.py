@@ -12,24 +12,46 @@ def strToList(foo):
 	return rtrnLst
 
 def workSet(sudokuSet):
+	# This is where the magic happens
+	# The first part of this function is how to eliminate numbers from being possibilities in cells
+	# If the number is already in the set, add it to the taken list
+	# Start with an empty taken list
 	takenList = []
-	for a in sudokuSet:
+	for element in sudokuSet:
 		# If this is a number, we can't modify it, and we can only say that nothing else can be this number
-		if isinstance(a, int):
-			takenList.append(a)
+		if isinstance(element, int):
+			takenList.append(element)
 
 	# After collecting everything that can't be changed, we can start changing things
-	for a in range(len(sudokuSet)):
+	for index in range(len(sudokuSet)):
 		# If this is a list, we should see if anything can be eliminated
-		if isinstance(sudokuSet[a], list):
-			for i in takenList:
+		if isinstance(sudokuSet[index], list):
+			for element in takenList:
 				# If we can rule out a number, we do
-				if sudokuSet[a].count(i) == 1:
-					sudokuSet[a].remove(i)
+				if sudokuSet[index].count(element) == 1:
+					sudokuSet[index].remove(element)
 
 			# If there is only one possible thing this could be, assume that it is that thing.
-			if len(sudokuSet[a]) == 1:
-				sudokuSet[a] = sudokuSet[a][0]
+			if len(sudokuSet[index]) == 1:
+				sudokuSet[index] = sudokuSet[index][0]
+
+
+	cardDict = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
+	for element in sudokuSet:
+		if isinstance(element, int):
+			cardDict[element] += 1
+		elif isinstance(element, list):
+			for item in element:
+				cardDict[item] += 1
+		else:
+			raise ValueError(element + " is neither a list or an int. Please fix this.")
+
+	for number in cardDict:
+		if cardDict[number] == 1 and sudokuSet.count(number) != 1:
+			for index in range(len(sudokuSet)):
+				if isinstance(sudokuSet[index], list):
+					if sudokuSet[index].count(number) == 1:
+						sudokuSet[index] = number
 
 	return sudokuSet
 
