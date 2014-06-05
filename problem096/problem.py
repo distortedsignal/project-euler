@@ -2,19 +2,21 @@ from copy import deepcopy
 from time import time
 
 def strToList(foo):
-	rtrnLst = []
+	'''Split strings into a list, with a list of range(1, 10) being substituted for each "0"'''
+	returnList = []
 	for i in foo:
 		if i != '0':
-			rtrnLst.append(int(i))
+			returnList.append(int(i))
 		else:
-			rtrnLst.append(list(range(1,10)))
+			returnList.append(list(range(1,10)))
 
-	return rtrnLst
+	return returnList
 
-def workSet(sudokuSet):
-	# This is where the magic happens
-	# The first part of this function is how to eliminate numbers from being possibilities in cells
-	# If the number is already in the set, add it to the taken list
+def removeFromLists(sudokuSet):
+	'''This is where some of the magic happens
+	The first part of this function is how to eliminate numbers from being possibilities in cells
+	If the number is already in the set, add it to the taken list'''
+	
 	# Start with an empty taken list
 	takenList = []
 	for element in sudokuSet:
@@ -22,7 +24,6 @@ def workSet(sudokuSet):
 		if isinstance(element, int):
 			takenList.append(element)
 
-	# After collecting everything that can't be changed, we can start changing things
 	for index in range(len(sudokuSet)):
 		# If this is a list, we should see if anything can be eliminated
 		if isinstance(sudokuSet[index], list):
@@ -35,24 +36,47 @@ def workSet(sudokuSet):
 			if len(sudokuSet[index]) == 1:
 				sudokuSet[index] = sudokuSet[index][0]
 
+	return sudokuSet
 
+def reduceLists(sudokuSet):
+	'''More magic. This is assuming that if all other items in the set DON'T have the possibility
+	to be a specific number, and a given cell DOES have that possibility, then that cell MUST
+	be that number. An example:
+			[3, 4, [5,6], [1, 2, 6], [1, 2, 6], 7, [6, 8, 9], [6, 8, 9], [1, 2, 6, 8, 9]]
+	In the above example, because 5 is only in the third square, we know that 5 must be in the
+	third square'''
+
+	# Set up a cardinality dictionary of how many times a specific number appears in this block
 	cardDict = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
 	for element in sudokuSet:
+		# If it's an int, we just add one to that thing's counter (this is necessary due to some weird
+		# corner cases of dealing with the int/list dichotomy)
 		if isinstance(element, int):
 			cardDict[element] += 1
+		# If it's a list, add one to the number of times each item in the list appears in this set
 		elif isinstance(element, list):
 			for item in element:
 				cardDict[item] += 1
+		# If it's neither of those things, then we have a problem
 		else:
 			raise ValueError(element + " is neither a list or an int. Please fix this.")
 
+	# For each number in the cardinality dictionary
 	for number in cardDict:
+		# If the cardinality of that number is one and the set doesn't already contain that number
 		if cardDict[number] == 1 and sudokuSet.count(number) != 1:
+			# Check each item that is a list. If that item contains the number we're looking for,
+			# change it to that number
 			for index in range(len(sudokuSet)):
 				if isinstance(sudokuSet[index], list):
 					if sudokuSet[index].count(number) == 1:
 						sudokuSet[index] = number
 
+	return sudokuSet
+
+def workSet(sudokuSet):
+	sudokuSet = removeFromLists(sudokuSet)
+	sudokuSet = reduceLists(sudokuSet)
 	return sudokuSet
 
 def workRows(puzzle):
@@ -112,7 +136,55 @@ def deduct(puzzle):
 
 	return puzzle
 
+def minLengthListLocation(puzzle):
+	# Find the item with the FEWEST possibilities (ie, the one we're most likely to guess right)
+	minLen = float("inf")
+	location = [-1,-1]
+	for row in range(len(puzzle)):
+		for element in range(len(puzzle[row])):
+			if isinstance(puzzle[row][element], list):
+				if minLen > len(puzzle[row][element]):
+					minLen = len(puzzle[row][element])
+					location = [row, element]
+
+	return location
+
 def induct(puzzle):
+	location = minLengthListLocation(puzzle) 
+
+	if location == [-1,-1]:
+		print "No lists as elements"
+		return puzzle
+
+	# Now we know there is still something left to do.
+	# Now we can select an element from the shortest list and attempt to deduce the puzzle with that
+	newPuzzle = deepcopy(puzzle)
+	for guess in puzzle[location[0]][location[1]]:
+		newPuzzle[location[0]][location[1]] = guess
+		newPuzzle = deduct(newPuzzle)
+
+		# Check to see that this is an ok choice
+		continue_flag = False
+		induct_flag = False
+		for row in newPuzzle:
+			for position in row:
+				if position == []:
+					# If there are any spots that can't be anything, we don't want them
+					continue_flag = True
+					break
+				if isinstance(position, list):
+					induct_flag = True
+
+			if continue_flag:
+				break
+
+		if continue_flag:
+			continue
+
+		puzzle = induct(newPuzzle)
+
+
+
 	# print puzzle
 	return puzzle
 
@@ -121,9 +193,11 @@ def solveSudoku(puzzle):
 	puzzle = deduct(puzzle)
 	# Solve the puzzle using inductive reasoning - if I do this, what does that imply?
 	puzzle = induct(puzzle)
+	# Return a solved puzzle
 	return puzzle
 
 def readInData(f):
+	# Figure it out, folks
 	tempDict = {}
 	currentGrid = ""
 	while True:
@@ -139,24 +213,42 @@ def readInData(f):
 
 	return tempDict
 
-f = open('sudoku.txt', 'r')
+# f = open('sudoku.txt', 'r')
 
 #Read in data for sudokus
-sudokuDict = readInData(f)
-time0 = 0
-timeDict = {}
-for a in sudokuDict:
-	# Change sudokus from strings into ints or lists of ints
-	rows = range(len(sudokuDict[a]))
-	for i in rows:
-		sudokuDict[a][i] = strToList(sudokuDict[a][i])
+# sudokuDict = readInData(f)
+# time0 = 0
+# timeDict = {}
+# for a in sudokuDict:
+# 	# Change sudokus from strings into ints or lists of ints
+# 	rows = range(len(sudokuDict[a]))
+# 	for i in rows:
+# 		sudokuDict[a][i] = strToList(sudokuDict[a][i])
 
-	time0 = time()
-	sudokuDict[a] = solveSudoku(sudokuDict[a])
-	timeDict[a] = time() - time0
+# 	time0 = time()
+# 	sudokuDict[a] = solveSudoku(sudokuDict[a])
+# 	timeDict[a] = time() - time0
 
-print timeDict
-print sudokuDict
+# print timeDict
+# print sudokuDict
+
+sudokuStrings = [
+'000003017',
+'015009008',
+'060000000',
+'100007000',
+'009000200',
+'000500004',
+'000000020',
+'500600340',
+'340200000']
+
+puzzle = []
+for a in sudokuStrings:
+	puzzle.append(strToList(a))
+
+print solveSudoku(puzzle)
+
 	
 
 
