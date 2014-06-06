@@ -149,11 +149,19 @@ def minLengthListLocation(puzzle):
 
 	return location
 
+def isBroken(puzzle):
+	for row in puzzle:
+		for element in row:
+			if element == []:
+				return True
+
+	return False
+
 def induct(puzzle):
 	location = minLengthListLocation(puzzle) 
 
 	if location == [-1,-1]:
-		print "No lists as elements"
+		# No lists as elements
 		return puzzle
 
 	# Now we know there is still something left to do.
@@ -163,29 +171,11 @@ def induct(puzzle):
 		newPuzzle[location[0]][location[1]] = guess
 		newPuzzle = deduct(newPuzzle)
 
-		# Check to see that this is an ok choice
-		continue_flag = False
-		induct_flag = False
-		for row in newPuzzle:
-			for position in row:
-				if position == []:
-					# If there are any spots that can't be anything, we don't want them
-					continue_flag = True
-					break
-				if isinstance(position, list):
-					induct_flag = True
-
-			if continue_flag:
-				break
-
-		if continue_flag:
+		if isBroken(newPuzzle):
 			continue
 
 		puzzle = induct(newPuzzle)
 
-
-
-	# print puzzle
 	return puzzle
 
 def solveSudoku(puzzle):
@@ -213,42 +203,24 @@ def readInData(f):
 
 	return tempDict
 
-# f = open('sudoku.txt', 'r')
+f = open('sudoku.txt', 'r')
 
-#Read in data for sudokus
-# sudokuDict = readInData(f)
-# time0 = 0
-# timeDict = {}
-# for a in sudokuDict:
-# 	# Change sudokus from strings into ints or lists of ints
-# 	rows = range(len(sudokuDict[a]))
-# 	for i in rows:
-# 		sudokuDict[a][i] = strToList(sudokuDict[a][i])
+# Read in data for sudokus
+sudokuDict = readInData(f)
+time0, time1 = 0, time()
+timeDict = {}
+for a in sudokuDict:
+	# Change sudokus from strings into ints or lists of ints
+	rows = range(len(sudokuDict[a]))
+	for i in rows:
+		sudokuDict[a][i] = strToList(sudokuDict[a][i])
 
-# 	time0 = time()
-# 	sudokuDict[a] = solveSudoku(sudokuDict[a])
-# 	timeDict[a] = time() - time0
+	time0 = time()
+	sudokuDict[a] = solveSudoku(sudokuDict[a])
+	timeDict[a] = time() - time0
+print "Total:", time() - time1
 
-# print timeDict
-# print sudokuDict
-
-sudokuStrings = [
-'000003017',
-'015009008',
-'060000000',
-'100007000',
-'009000200',
-'000500004',
-'000000020',
-'500600340',
-'340200000']
-
-puzzle = []
-for a in sudokuStrings:
-	puzzle.append(strToList(a))
-
-print solveSudoku(puzzle)
-
+print sudokuDict
 	
 
 
