@@ -158,8 +158,8 @@ def induct(puzzle):
 
 	# Now we know there is still something left to do.
 	# Now we can select an element from the shortest list and attempt to deduce the puzzle with that
-	newPuzzle = deepcopy(puzzle)
 	for guess in puzzle[location[0]][location[1]]:
+		newPuzzle = deepcopy(puzzle)
 		newPuzzle[location[0]][location[1]] = guess
 		newPuzzle = deduct(newPuzzle)
 
