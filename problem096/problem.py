@@ -1,8 +1,6 @@
 from copy import deepcopy
 from time import time
 
-indexList = [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-
 def strToList(foo):
 	'''Split strings into a list, with a list of range(1, 10) being substituted for each "0"'''
 	returnList = []
@@ -102,18 +100,14 @@ def workRows(puzzle):
 
 	return puzzle
 
-def makeCol(puzzle, colNum):
-	returnSet = []
-	for i in range(len(puzzle)):
-		returnSet.append(puzzle[i][colNum])
-
-	return returnSet
-
 def workCols(puzzle):
 	# Here we have to assume the puzzle is a square
 	tempSet = []
 	for colNum in range(len(puzzle)):
-		tempSet = makeCol(puzzle, colNum)
+		tempSet = []
+		# Process the temp set to be columns
+		for rowNum in range(len(puzzle)):
+			tempSet.append(puzzle[rowNum][colNum])
 
 		# Work the set like we did with rows
 		rtrnTempSet = workSet(tempSet)
@@ -123,26 +117,26 @@ def workCols(puzzle):
 
 	return puzzle
 
-def makeSquare(puzzle, start):
-	returnSet = []
-	for i in indexList:
-		returnSet.append(puzzle[start[1] + i[1]][start[0] + i[0]])
-
-	return returnSet
-
 def workSqrs(puzzle):
 	tempSet = []
+	# Make a set of [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
+	startingIndices = [[x,y] for x in range(3) for y in range(3)]
 	# For each item in that set, assume that a square starts at that location multiplied by 3
-	for start in indexList:
+	for start in startingIndices:
 		# Like in the columns example, set up a temp set
-		tempSet = makeSquare(puzzle, [start[1] * 3,start[0] * 3])
+		tempSet = []
+		# Get each item in that square, which is actually starting index * 3 + the set of starting indices
+		for add in startingIndices:
+			tempSet.append(puzzle[start[1] * 3 + add[1]][start[0] * 3 + add[0]])
 
 		# Work the set, like we did in rows and columns
 		rtrnTempSet = workSet(tempSet)
 		index = 0
 		# Copy items from the worked set back into the square
-		for add in indexList:
+		for add in startingIndices:
 			# I should REALLY check that the assumptions I'm making here are valid.
+			# This assumption has been validated. I used a debugger to step through this code and I verified
+			# that these will come out of the list in the same order every time
 			puzzle[start[1] * 3 + add[1]][start[0] * 3 + add[0]] = rtrnTempSet[index]
 			index += 1
 
@@ -169,58 +163,12 @@ def minLengthListLocation(puzzle):
 
 	return location
 
-def setBroken(sudokuSet):
-	takenList = []
-	for a in sudokuSet:
-		if takenList.count(a) > 0:
-			return True
-
-		takenList.append(a)
-
-	return False
-
-def rowBroken(puzzle):
-	for row in puzzle:
-		if setBroken(row):
-			return True
-
-	return False
-
-def columnBroken(puzzle):
-	tempCol = []
-	# Assuming this puzzle is a square
-	for colNum in range(len(puzzle[0])):
-		tempCol = makeCol(puzzle, colNum)
-		if setBroken(tempCol):
-			return True
-
-	return False
-
-def squareBroken(puzzle):
-	tempSquare = []
-	# Assuming just so many things
-	for i in indexList:
-		tempSquare = makeSquare(puzzle, [i[1]*3,i[0]*3])
-		if setBroken(tempSquare):
-			return True
-
-	return False
-
 def isBroken(puzzle):
 	'''Is the puzzle broken at this point?'''
 	for row in puzzle:
 		for element in row:
 			if element == []:
 				return True
-
-	if rowBroken(puzzle):
-		return True
-
-	if columnBroken(puzzle):
-		return True
-
-	if squareBroken(puzzle):
-		return True
 
 	return False
 
