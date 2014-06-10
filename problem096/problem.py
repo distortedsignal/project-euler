@@ -1,6 +1,8 @@
 from copy import deepcopy
 from time import time
 
+indexList = [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
+
 def strToList(foo):
 	'''Split strings into a list, with a list of range(1, 10) being substituted for each "0"'''
 	returnList = []
@@ -46,6 +48,8 @@ def reduceLists(sudokuSet):
 	In the above example, because 5 is only in the third square, we know that 5 must be in the
 	third square'''
 
+	# TODO: Run this iteratively, aka, the way that I'm running the deduct function
+
 	# Set up a cardinality dictionary of how many times a specific number appears in this block
 	cardDict = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
 	for element in sudokuSet:
@@ -71,12 +75,24 @@ def reduceLists(sudokuSet):
 				if isinstance(sudokuSet[index], list):
 					if sudokuSet[index].count(number) == 1:
 						sudokuSet[index] = number
+						break
 
 	return sudokuSet
 
+def repeatUntilStable(func, numberSet):
+	oldSet = []
+	while True:
+		oldSet = deepcopy(numberSet)
+		numberSet = func(numberSet)
+
+		if oldSet == numberSet:
+			break
+
+	return numberSet
+
 def workSet(sudokuSet):
-	sudokuSet = removeFromLists(sudokuSet)
-	sudokuSet = reduceLists(sudokuSet)
+	sudokuSet = repeatUntilStable(removeFromLists, sudokuSet)
+	sudokuSet = repeatUntilStable(reduceLists, sudokuSet)
 	return sudokuSet
 
 def workRows(puzzle):
@@ -86,37 +102,46 @@ def workRows(puzzle):
 
 	return puzzle
 
+def makeCol(puzzle, colNum):
+	returnSet = []
+	for i in range(len(puzzle)):
+		returnSet.append(puzzle[i][colNum])
+
+	return returnSet
+
 def workCols(puzzle):
 	# Here we have to assume the puzzle is a square
 	tempSet = []
 	for colNum in range(len(puzzle)):
-		tempSet = []
-		# Process the temp set to be columns
-		for rowNum in range(len(puzzle)):
-			tempSet.append(puzzle[rowNum][colNum])
+		tempSet = makeCol(puzzle, colNum)
 
-		# Re-insert into columns
+		# Work the set like we did with rows
 		rtrnTempSet = workSet(tempSet)
+		# Re-insert into columns
 		for rowNum in range(len(puzzle)):
 			puzzle[rowNum][colNum] = rtrnTempSet[rowNum]
 
 	return puzzle
 
+def makeSquare(puzzle, start):
+	returnSet = []
+	for i in indexList:
+		returnSet.append(puzzle[start[1] + i[1]][start[0] + i[0]])
+
+	return returnSet
+
 def workSqrs(puzzle):
 	tempSet = []
-	# Make a set of [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-	startingIndices = [[x,y] for x in range(3) for y in range(3)]
 	# For each item in that set, assume that a square starts at that location multiplied by 3
-	for start in startingIndices:
+	for start in indexList:
 		# Like in the columns example, set up a temp set
-		tempSet = []
-		# Get each item in that square, which is actually starting index * 3 + the set of starting indices
-		for add in startingIndices:
-			tempSet.append(puzzle[start[1] * 3 + add[1]][start[0] * 3 + add[0]])
+		tempSet = makeSquare(puzzle, [start[1] * 3,start[0] * 3])
 
+		# Work the set, like we did in rows and columns
 		rtrnTempSet = workSet(tempSet)
 		index = 0
-		for add in startingIndices:
+		# Copy items from the worked set back into the square
+		for add in indexList:
 			# I should REALLY check that the assumptions I'm making here are valid.
 			puzzle[start[1] * 3 + add[1]][start[0] * 3 + add[0]] = rtrnTempSet[index]
 			index += 1
@@ -124,16 +149,10 @@ def workSqrs(puzzle):
 	return puzzle
 
 def deduct(puzzle):
-	oldPuzzle = []
-	while True:
-		oldPuzzle = deepcopy(puzzle)
-		puzzle = workRows(puzzle)
-		puzzle = workCols(puzzle)
-		puzzle = workSqrs(puzzle)
-		
-		if puzzle == oldPuzzle:
-			break
-
+	puzzle = workRows(puzzle)
+	puzzle = workCols(puzzle)
+	puzzle = workSqrs(puzzle)
+	
 	return puzzle
 
 def minLengthListLocation(puzzle):
@@ -146,14 +165,62 @@ def minLengthListLocation(puzzle):
 				if minLen > len(puzzle[row][element]):
 					minLen = len(puzzle[row][element])
 					location = [row, element]
+					# If the length is 2, we can't get a list shorter, so return early
 
 	return location
 
+def setBroken(sudokuSet):
+	takenList = []
+	for a in sudokuSet:
+		if takenList.count(a) > 0:
+			return True
+
+		takenList.append(a)
+
+	return False
+
+def rowBroken(puzzle):
+	for row in puzzle:
+		if setBroken(row):
+			return True
+
+	return False
+
+def columnBroken(puzzle):
+	tempCol = []
+	# Assuming this puzzle is a square
+	for colNum in range(len(puzzle[0])):
+		tempCol = makeCol(puzzle, colNum)
+		if setBroken(tempCol):
+			return True
+
+	return False
+
+def squareBroken(puzzle):
+	tempSquare = []
+	# Assuming just so many things
+	for i in indexList:
+		tempSquare = makeSquare(puzzle, [i[1]*3,i[0]*3])
+		if setBroken(tempSquare):
+			return True
+
+	return False
+
 def isBroken(puzzle):
+	'''Is the puzzle broken at this point?'''
 	for row in puzzle:
 		for element in row:
 			if element == []:
 				return True
+
+	if rowBroken(puzzle):
+		return True
+
+	if columnBroken(puzzle):
+		return True
+
+	if squareBroken(puzzle):
+		return True
 
 	return False
 
@@ -169,7 +236,7 @@ def induct(puzzle):
 	for guess in puzzle[location[0]][location[1]]:
 		newPuzzle = deepcopy(puzzle)
 		newPuzzle[location[0]][location[1]] = guess
-		newPuzzle = deduct(newPuzzle)
+		newPuzzle = repeatUntilStable(deduct, newPuzzle)
 
 		if isBroken(newPuzzle):
 			continue
@@ -180,7 +247,7 @@ def induct(puzzle):
 
 def solveSudoku(puzzle):
 	# Solve the puzzle using deductive reasoning - if this is true, then this must be true
-	puzzle = deduct(puzzle)
+	puzzle = repeatUntilStable(deduct, puzzle)
 	# Solve the puzzle using inductive reasoning - if I do this, what does that imply?
 	puzzle = induct(puzzle)
 	# Return a solved puzzle
@@ -207,25 +274,19 @@ f = open('sudoku.txt', 'r')
 
 # Read in data for sudokus
 sudokuDict = readInData(f)
-time0, time1 = 0, time()
-timeDict = {}
+ssum, summed = 0, 0
+time0 = time()
 for a in sudokuDict:
 	# Change sudokus from strings into ints or lists of ints
 	rows = range(len(sudokuDict[a]))
 	for i in rows:
 		sudokuDict[a][i] = strToList(sudokuDict[a][i])
 
-	time0 = time()
 	sudokuDict[a] = solveSudoku(sudokuDict[a])
-	timeDict[a] = time() - time0
-print "Total:", time() - time1
+	#ssum += ((sudokuDict[a][0][0]*100) + (sudokuDict[a][0][1]*10) + (sudokuDict[a][0][2]))
+	#summed += 1
+	# print "After", a + ", ssum is", ssum, "and summed is", summed
 
 print sudokuDict
-	
 
-
-
-
-# Other things
-
-
+#print "Found answer", ssum, "in", time() - time0, "seconds."
