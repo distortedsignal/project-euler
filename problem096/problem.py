@@ -42,8 +42,6 @@ def reduceLists(sudokuSet):
 	In the above example, because 5 is only in the third square, we know that 5 must be in the
 	third square'''
 
-	# TODO: Run this iteratively, aka, the way that I'm running the deduct function
-
 	# Set up a cardinality dictionary of how many times a specific number appears in this block
 	cardDict = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
 	for element in sudokuSet:
