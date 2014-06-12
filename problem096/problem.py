@@ -163,14 +163,39 @@ def minLengthListLocation(puzzle):
 
 	return location
 
+def brokenRows(puzzle):
+	tempSet = []
+	for row in puzzle:
+		for element in row:
+			if type(element) is int:
+				if tempSet.count(element) > 0:
+					return True
+				else:
+					tempSet.append(element)
+
 def isBroken(puzzle):
 	'''Is the puzzle broken at this point?'''
+	# Check for elements that cannot have any elements
 	for row in puzzle:
 		for element in row:
 			if element == []:
 				return True
 
+	# Check that no sets have two of the same definate element
+	if brokenRows(puzzle):
+		return True
+
 	return False
+
+def isDone(puzzle):
+	'''Is the puzzle done at this point?'''
+	# Check for elements that are lists
+	for row in puzzle:
+		for element in row:
+			if type(element) is not int:
+				return False
+
+	return True
 
 def induct(puzzle):
 	location = minLengthListLocation(puzzle) 
@@ -190,6 +215,9 @@ def induct(puzzle):
 			continue
 
 		puzzle = induct(newPuzzle)
+
+		if isDone(puzzle):
+			break
 
 	return puzzle
 
