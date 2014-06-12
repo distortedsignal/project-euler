@@ -18,11 +18,7 @@ def removeFromLists(sudokuSet):
 	If the number is already in the set, add it to the taken list'''
 	
 	# Start with an empty taken list
-	takenList = []
-	for element in sudokuSet:
-		# If this is a number, we can't modify it, and we can only say that nothing else can be this number
-		if isinstance(element, int):
-			takenList.append(element)
+	takenList = filter(lambda x: isinstance(x, int), sudokuSet)
 
 	for index in range(len(sudokuSet)):
 		# If this is a list, we should see if anything can be eliminated
@@ -225,7 +221,7 @@ def solveSudoku(puzzle):
 	# Solve the puzzle using deductive reasoning - if this is true, then this must be true
 	puzzle = repeatUntilStable(deduct, puzzle)
 	# Solve the puzzle using inductive reasoning - if I do this, what does that imply?
-	puzzle = induct(puzzle)
+	# puzzle = induct(puzzle)
 	# Return a solved puzzle
 	return puzzle
 
