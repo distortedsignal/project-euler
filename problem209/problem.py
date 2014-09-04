@@ -1,37 +1,41 @@
-class TruthTable:
-	def __init__(self):
-		self.idx = 0
-		self.size = 8
-
-	def __init__(self, idx, size):
-		self.idx = idx
-		self.size = size
-
-	def eval(self, arg):
-		fmtStr = '{0:0' + str(self.size) + 'b}'
-		return '1' == fmtStr.format(self.idx)[arg]
-
 def generateShift(idx):
 	binaryString = '{0:06b}'.format(idx)
 	result = int(binaryString[0]) ^ (int(binaryString[1]) & int(binaryString[2]))
 	return ((idx << 1) + result) % 64
 
-
 if __name__ == "__main__":
-	flag = False
-	goodTT = 0
+	generatedMap = {}
+	cycles = []
 
-	for i in range(4096):
-		flag = False
-		t = TruthTable(i, 64)
-		for i in range(64):
-			shift = generateShift(i)
-			if (t.eval(i) and t.eval(shift)) == True:
-				flag = True
+	for i in range(64):
+		generatedMap[i] = generateShift(i)
+
+	print generatedMap
+
+	# If you can't write the code for it, you don't know what you're doing
+	cycles = []
+
+	inserted = False
+
+	for i in generatedMap:
+		inserted = False
+		for a in cycles:
+			if a.count(i) > 0:
+				inserted = True
 				break
 
-		if not flag:
-			goodTT += 1
+		if not inserted:
+			holder = i
+			newCycle = []
+			while True:
+				if newCycle.count(holder) == 0:
+					newCycle.append(holder)
+					holder = generatedMap[holder]
+				else:
+					break
+					
+			cycles.append(newCycle)
 
-	print "Good Truth Tables:", goodTT
-	
+	print cycles
+
+
