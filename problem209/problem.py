@@ -9,6 +9,9 @@ def fibGen(x, y):
 	return g
 
 def countOptions(digits):
+	# The realization that this is a Fibonacci sequence came from David "Plasma" Paul.
+	# And I honestly don't know how this works. If anyone can explain this to me
+	# mathematically, please shoot me a message.
 	if digits == 1:
 		return 1
 
@@ -33,8 +36,6 @@ if __name__ == "__main__":
 	t = time()
 	for i in range(64):
 		generatedMap[i] = generateShift(i)
-
-	print generatedMap
 
 	# If you can't write the code for it, you don't know what you're doing
 	cycles = []
@@ -66,8 +67,3 @@ if __name__ == "__main__":
 		prod *= countOptions(len(i))
 
 	print prod
-
-	print cycles
-	print "Time taken:", time() - t
-
-
