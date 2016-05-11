@@ -1,4 +1,7 @@
+#! /usr/local/bin/python3.5
+
 from enum import Enum
+from copy import deepcopy
 
 class CardinalDirection(Enum):
     north = 0
@@ -29,16 +32,14 @@ class Cursor(object):
             self.position[0] -= 1
 
     def left(self):
-        self.add_step()
         self.direction = (self.direction-1) % 4
 
     def right(self):
-        self.add_step()
         self.direction = (self.direction+1) % 4
 
     def teleport(self, right_diff, forward_diff, turns, steps_added):
         '''Teleport relative to the current cursor'''
-        new_cursor = Cursor(self.position, self.direction, self.steps)
+        new_cursor = Cursor(deepcopy(self.position), self.direction, self.steps)
         if new_cursor.direction == CardinalDirection.north.value:
             new_cursor.position = [new_cursor.position[0]+right_diff, new_cursor.position[1]+forward_diff]
         elif new_cursor.direction == CardinalDirection.east.value:
@@ -52,6 +53,11 @@ class Cursor(object):
         new_cursor.steps += steps_added
         return new_cursor
 
+    def __str__(self):
+        return "{position: " + str(self.position) + ", direction: " + \
+            str(self.direction) + ", steps: " + str(self.steps) + "}"
+
+
 def teleport_function_creator(right_diff, forward_diff, turns, steps_added):
     def teleport_function(current_cursor):
         return current_cursor.teleport(right_diff, forward_diff, turns, steps_added)
@@ -61,8 +67,8 @@ def calculate_a(level_plus_one_a, level_plus_one_b):
     new_cursor = Cursor([0, 0])
     new_cursor = level_plus_one_a(new_cursor)
     new_cursor.right()
-    new_cursor.forward()
     new_cursor = level_plus_one_b(new_cursor)
+    new_cursor.forward()
     new_cursor.right()
     return teleport_function_creator(new_cursor.position[0], 
         new_cursor.position[1], new_cursor.direction, new_cursor.steps)
@@ -82,11 +88,10 @@ def build_descent_dictionary(levels, partial_descent_dict):
         return partial_descent_dict
 
     if partial_descent_dict == {}:
+        levels -= 1
         partial_descent_dict[levels] = {
-            "a": teleport_function_creator(1, 0, 2, 3),
-            #"Fix this", # One step right then turn around, 3 steps
-            "b": teleport_function_creator(-1, 0, 2, 3)
-            #"Fix this too" # One step left then turn around, 3 steps
+            "a": teleport_function_creator(1, 0, 2, 1),
+            "b": teleport_function_creator(-1, 0, 2, 1)
         }
     else:
         partial_descent_dict[levels] = {
@@ -100,6 +105,9 @@ def find_location_after_steps(descent_dict, steps, direction_string):
     level = 0
     cursor = Cursor([0, 0])
     while True:
+        print("Iterating with cursor " + str(cursor) + 
+            " and direction string '" + direction_string + "' on level " + 
+            str(level) + ".")
         if cursor.steps == steps:
             return str(cursor.position)
 
@@ -116,16 +124,21 @@ def find_location_after_steps(descent_dict, steps, direction_string):
             direction_string = direction_string[1:]
             continue
 
-        new_cursor = descent_dict[level][direction_string[0]](cursor)
-        
-        if new_cursor.steps > steps:
-            level += 1
-            if direction_string[0] == 'a':
-                direction_string = 'aRFbR'
-            elif direction_string[0] == 'b':
-                direction_string = 'LFaLb'
-        elif new_cursor.steps <= steps:
-            cursor = new_cursor
+        try:
+            new_cursor = descent_dict[level][direction_string[0]](cursor)
+            
+            if new_cursor.steps > steps:
+                print("New cursor " + str(new_cursor) + " has greater steps than we need.")
+                level += 1
+                if direction_string[0] == 'a':
+                    direction_string = 'aRbFR'
+                elif direction_string[0] == 'b':
+                    direction_string = 'LFaLb'
+            elif new_cursor.steps <= steps:
+                print("New cursor " + str(new_cursor) + " is within the valid step count.")
+                cursor = new_cursor
+                direction_string = direction_string[1:]
+        except KeyError:
             direction_string = direction_string[1:]
 
 print("Defined functions and data structures.")
